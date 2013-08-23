@@ -1,0 +1,184 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+
+<script type="text/javascript">
+    function PessoaViewModel() {
+        var self = this;
+        self.id = ko.observable('');
+        self.nome = ko.observable();
+        self.email = ko.observable();
+
+        self.listaDePessoas = ko.observableArray();
+        
+        //propriedades pra auxiliar a tela
+        self.mensagem = ko.observable('');
+
+        self.limparTela = function() {
+            self.id('');
+            self.nome('');
+            self.email('');
+        };
+
+        self.btnSalvar = function() {
+            if (self.id() == "") {
+                self.salvar();
+            } else {
+                self.alterar();
+            }
+        };
+
+        self.salvar = function () {
+            var pessoa = {
+                Nome: self.nome(),
+                Email: self.email()
+            };
+            salvarNovaPessoa(pessoa);
+        };
+
+        self.carregaAlterar = function(pessoa) {
+            self.nome(pessoa.Nome);
+            self.id(pessoa.Id);
+            self.email(pessoa.Email);
+        };
+
+        self.alterar = function () {
+            var pessoa = {
+                Id: self.id(),
+                Nome: self.nome(),
+                Email: self.email()
+            };
+            alterarPessoa(pessoa);
+        };
+
+        self.excluir = function (pessoa) {
+            deletarPessoa(pessoa);
+        };
+
+        self.listar = function () {
+            listarPessoas();
+        };
+
+        function listarPessoas() {
+            return ajaxRequest("get", pessoaUrl())
+                .done(getSucceeded)
+                .fail(getFailed);
+
+            function getSucceeded(data) {
+                self.listaDePessoas([]);
+                var array = self.listaDePessoas();
+                ko.utils.arrayPushAll(array, data);
+                self.listaDePessoas.valueHasMutated();
+            }
+
+            function getFailed() {
+                self.mensagem("Erro ao receber lista de pessoas.");
+            }
+        }
+
+        function deletarPessoa(pessoa) {
+            return ajaxRequest("delete", pessoaUrl(pessoa.Id))
+                .done(function (result) {
+                    //exibe um salvo com sucesso
+                    self.mensagem("Registro Excluido com sucesso!");
+                    listarPessoas();
+                })
+                .fail(function () {
+                    //exibe um erro
+                    self.mensagem("Erro ao alterar nova pessoa.");
+                });
+        }
+
+        function alterarPessoa(pessoa) {
+            return ajaxRequest("put", pessoaUrl(pessoa.Id), pessoa, "text")
+                .done(function (result) {
+                    console.log(result);
+                    //exibe um salvo com sucesso
+                    self.mensagem("Registro Alterado com sucesso!");
+                    listarPessoas();
+                    self.limparTela();
+                })
+                .fail(function () {
+                    //exibe um erro
+                    self.mensagem("Erro ao alterar nova pessoa.");
+                });
+        }
+
+        function salvarNovaPessoa(pessoa) {
+            return ajaxRequest("post", pessoaUrl(), pessoa)
+                .done(function (result) {
+                    console.log(result);
+                    //exibe um salvo com sucesso
+                    self.mensagem("Registro Salvo com sucesso!");
+                    listarPessoas();
+                    self.limparTela();
+                })
+                .fail(function () {
+                    //exibe um erro
+                    self.mensagem("Erro ao adicionar nova pessoa.");
+                });
+        }
+
+        function ajaxRequest(type, url, data, dataType) { // Ajax helper
+            var options = {
+                dataType: dataType || "json",
+                contentType: "application/json",
+                cache: false,
+                type: type,
+                data: JSON.stringify(data)
+            };
+            return $.ajax(url, options);
+        }
+        
+        // rotas
+        function pessoaUrl(id) { return "/api/pessoa/" + (id || ""); }
+
+    };
+
+    var viewModel = new PessoaViewModel();
+
+    viewModel.listar();
+
+    $(document).ready(function () {
+        ko.applyBindings(viewModel);
+    });
+
+</script>
+
+<div id="body">
+    <section class="content-wrapper main-content clear-fix">
+        <h2>Pessoa</h2>
+        <em data-bind="text: mensagem"></em>
+        <form>
+            <label>Nome:</label>
+            <input type="text" value="" data-bind="value: nome" />
+            <br />
+            <label>Email:</label>
+            <input type="text" value="" data-bind="value: email" />
+            <button data-bind="click: btnSalvar">Salvar</button>
+        </form>
+    </section>
+    <section>
+        
+        <table>
+            <thead>
+                <tr>
+                    <td>Nome</td>
+                    <td>Email</td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach: listaDePessoas">
+                <tr>
+                    <td data-bind="text: Nome"></td>
+                    <td data-bind="text: Email"></td>
+                    <td>
+                        <a data-bind=" event: { click: $root.excluir }" href="javascript:;">Excluir</a> | 
+                        <a data-bind="    event: { click: $root.carregaAlterar }" href="javascript:;">Alterar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+</div>
