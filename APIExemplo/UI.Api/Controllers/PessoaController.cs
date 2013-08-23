@@ -5,13 +5,13 @@ using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
-using System.Web.Providers.Entities;
 using UI.Api.Aplicacao;
 using UI.Api.Models;
 
 
 namespace UI.Api.Controllers
 {
+    [Authorize]
     public class PessoaController : ApiController
     {
 
@@ -22,13 +22,11 @@ namespace UI.Api.Controllers
             pessoaApp = new AplicacaoPessoa();
         }
 
-        
         public IEnumerable<Pessoa> Get()
         {
             return pessoaApp.Buscar();
         }
 
-        // POST api/pessoa
         public HttpResponseMessage Post(Pessoa pessoa)
         {
             if (!ModelState.IsValid)
@@ -42,7 +40,6 @@ namespace UI.Api.Controllers
             return response;
         }
 
-        // PUT api/pessoa/5
         public HttpResponseMessage Put(string id, Pessoa pessoa)
         {
             if (!ModelState.IsValid)
@@ -66,7 +63,6 @@ namespace UI.Api.Controllers
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
-        // DELETE api/pessoa/5
         public HttpResponseMessage Delete(string id)
         {
             var pessoaBanco = pessoaApp.BuscarPorId(id);
