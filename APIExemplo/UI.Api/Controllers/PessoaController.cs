@@ -5,7 +5,6 @@ using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
-using System.Web.Providers.Entities;
 using UI.Api.Aplicacao;
 using UI.Api.Models;
 

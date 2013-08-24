@@ -147,8 +147,15 @@
 </script>
 
 <div id="body">
+    <section class="featured">
+        <div class="content-wrapper">
+            <p>
+                Esta é uma tela que demonstra o uso da @Html.ActionLink("API Pessoa", "Index") fazendo um simples CRUD usando KnockoutJS.
+            </p>
+        </div>
+    </section>
     <section class="content-wrapper main-content clear-fix">
-        <h2>Pessoa</h2>
+        <h2>Cadastrar Pessoa</h2>
         <em data-bind="text: mensagem"></em>
         <form>
             <label>Nome:</label>
@@ -159,8 +166,8 @@
             <button data-bind="click: btnSalvar">Salvar</button>
         </form>
     </section>
-    <section>
-        
+    <section class="content-wrapper clear-fix">
+        <h2 class="sample-header">Listagem de Pessoas</h2>
         <table>
             <thead>
                 <tr>
