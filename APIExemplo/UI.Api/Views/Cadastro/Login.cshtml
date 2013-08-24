@@ -17,39 +17,48 @@
         };
 
         function Logar() {
-            return ajaxRequest(loginUrl())
-                .done(getSucceeded)
-                .fail(getFailed);
+            var usuario =
+            {
+                Login: self.login(),
+                Senha: self.senha()
+            };
+            
+            return ajaxRequest("post", loginUrl(), usuario)
+                .done(function (data) {
+                    console.log(data);
+                    console.log(data.Token);
+                    $.cookie('token', data.Token);
+                    //exibe um salvo com sucesso
+                    self.mensagem("Login realizado com sucesso!");
+                    
 
-            function getSucceeded(data) {
-                console.log(data);
-                self.mensagem("Parabêns você esta logado!");
-            }
+                   /* var delay = 3000;
+                    setTimeout(function() {
+                        window.location = "/cadastro";
+                    },delay);*/
 
-            function getFailed(data) {
-                console.log(data);
-                self.mensagem("Não foi possivel entrar no sistemas.");
-            }
+                })
+                .fail(function (data) {
+                    console.log(data);
+                    //exibe um erro
+                    self.mensagem("Erro ao logar.");
+                });
         }
 
 
-        function ajaxRequest(url) {
-            var token = self.login()+":"+self.senha();
-            var hash = btoa(token);
-            var header = "Basic " + hash;
-            console.log(header);
-
-            return $.ajax({
-                url: url,
-                dataType: "json",
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader("Authorization", header);
-                }
-            });
+        function ajaxRequest(type, url, data, dataType) { // Ajax helper
+            var options = {
+                dataType: dataType || "json",
+                contentType: "application/json",
+                cache: false,
+                type: type,
+                data: JSON.stringify(data)
+            };
+            return $.ajax(url, options);
         }
 
         // rotas
-        function loginUrl(id) { return "/api/pessoa/" + (id || ""); }
+        function loginUrl() { return "/api/login/autenticar/"; }
 
     };
 
