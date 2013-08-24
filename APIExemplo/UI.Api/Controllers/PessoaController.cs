@@ -11,7 +11,6 @@ using UI.Api.Models;
 
 namespace UI.Api.Controllers
 {
-    [Authorize]
     public class PessoaController : ApiController
     {
 

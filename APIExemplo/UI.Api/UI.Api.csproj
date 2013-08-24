@@ -145,6 +145,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Aplicacao\AplicacaoPessoa.cs" />
+    <Compile Include="Aplicacao\AplicacaoUsuario.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -170,10 +171,16 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Extensao.cs" />
     <Compile Include="Models\Pessoa.cs" />
-    <Compile Include="Modulo\CBAModule.cs" />
+    <Compile Include="Models\Status.cs" />
+    <Compile Include="Models\Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositorio\RepositorioMongo.cs" />
+    <Compile Include="Seguranca\Criptografica.cs" />
+    <Compile Include="Seguranca\ExigeHTTPS.cs" />
+    <Compile Include="Seguranca\ExigeToken.cs" />
+    <Compile Include="Seguranca\Token.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
