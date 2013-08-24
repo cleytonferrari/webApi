@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Web;
+using System.Web.UI;
 
 namespace UI.Api.Modulo
 {
@@ -13,7 +15,7 @@ namespace UI.Api.Modulo
     {
         public void Dispose()
         {
-            throw new NotImplementedException();
+            
         }
 
         public void Init(HttpApplication context)
@@ -24,9 +26,10 @@ namespace UI.Api.Modulo
 
         private void context_EndRequest(object sender, EventArgs e)
         {
-            var response = HttpContext.Current.Response;
+            //Exemplo pra requisitar tela de login do browser
+            /*var response = HttpContext.Current.Response;
             if (response.StatusCode == 401)
-                response.Headers.Add("WWW-Authenticate", "Basic realm=\"Minha API\"");
+                response.Headers.Add("WWW-Authenticate", "Basic realm=\"Minha API\"");*/
         }
 
         private void context_AuthenticateRequest(object sender, EventArgs e)

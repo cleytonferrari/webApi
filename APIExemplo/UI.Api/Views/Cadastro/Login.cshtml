@@ -1,0 +1,113 @@
+﻿@{
+    ViewBag.Title = "Login";
+}
+
+
+<script type="text/javascript">
+    function LoginViewModel() {
+        var self = this;
+        self.login = ko.observable();
+        self.senha = ko.observable();
+
+        //propriedades pra auxiliar a tela
+        self.mensagem = ko.observable('');
+
+        self.limparTela = function () {
+            self.login('');
+            self.senha('');
+        };
+
+        self.btnLogar = function () {
+            Logar();
+        };
+
+
+
+        function Logar() {
+            return ajaxRequest(loginUrl())
+                .done(getSucceeded)
+                .fail(getFailed);
+
+            function getSucceeded(data) {
+                console.log(data);
+            }
+
+            function getFailed(data) {
+                console.log(data);
+                self.mensagem("Não foi possivel entrar no sistemas.");
+            }
+        }
+
+
+        function ajaxRequest(url) {
+            var token = self.login()+":"+self.senha();
+            var hash = btoa(token);
+            var header = "Basic " + hash;
+            console.log(header);
+
+            return $.ajax({
+                url: url,
+                dataType: "json",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", header);
+                }
+            });
+        }
+
+        // rotas
+        function loginUrl(id) { return "/api/pessoa/" + (id || ""); }
+
+    };
+
+    var viewModel = new LoginViewModel();
+
+
+    $(document).ready(function () {
+        ko.applyBindings(viewModel);
+    });
+
+</script>
+
+<div id="body">
+    <section class="content-wrapper main-content clear-fix">
+        <h2>Pessoa</h2>
+        <em data-bind="text: mensagem"></em>
+        <form>
+            <label>Login:</label>
+            <input type="text" value="" data-bind="value: login" />
+            <br />
+            <label>Senha:</label>
+            <input type="text" value="" data-bind="value: senha" />
+            <button data-bind="click: btnLogar">Entrar</button>
+        </form>
+    </section>
+</div>
+
+@*<p>
+    <a href="#" id="test">Test call</a>
+</p>
+<div id="result" />
+<script>
+    $(function() {
+        $("#test").click(function () {
+            var token = "cleyton:171099";
+            var hash = btoa(token);
+            var header = "Basic " + hash;
+            console.log(header);
+
+            $.ajax({
+                url: "/api/pessoa/",
+                dataType: "json",
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader("Authorization", header);
+                },
+                success: function(data) {
+                    alert(data);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert(errorThrown);
+                }
+            });
+        });
+    });
+</script>*@
