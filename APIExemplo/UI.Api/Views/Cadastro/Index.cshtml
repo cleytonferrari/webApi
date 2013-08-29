@@ -128,7 +128,7 @@
                 type: type,
                 data: JSON.stringify(data),
                 beforeSend: function (xhr) {
-                    xhr.setRequestHeader("X-Token", $.cookie('token'));
+                    //xhr.setRequestHeader("X-Token", $.cookie('token'));
                 }
             };
             return $.ajax(url, options);
