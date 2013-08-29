@@ -45,41 +45,7 @@ namespace UI.Api.Seguranca
                 return Task.FromResult(reply);
             }
 
-            //return base.SendAsync(request, cancellationToken);
-
-
-            var request2 = new RequestEnvelope(request);
-
-            if (!request2.IsCorsPreflight)
-                return base.SendAsync(request, cancellationToken);
-
-
-            request.Headers.Add("Access-Control-Allow-Origin", "*");
-            const string supportedMethods = "POST, PUT, GET, DELETE";
-            request.Headers.Add("Access-Control-Allow-Methods", supportedMethods);
-            return base.SendAsync(request, cancellationToken); 
-
-        }
-
-        struct RequestEnvelope
-        {
-            private readonly HttpRequestMessage _request;
-            public RequestEnvelope(HttpRequestMessage request) :
-                this()
-            {
-                _request = request;
-            }
-
-            public bool IsCorsPreflight
-            {
-                get
-                {
-                    return (
-                        _request.Headers.Contains("Origin") &&
-                        _request.Method == HttpMethod.Options
-                        );
-                }
-            }
+            return base.SendAsync(request, cancellationToken);
         }
     }
 }
