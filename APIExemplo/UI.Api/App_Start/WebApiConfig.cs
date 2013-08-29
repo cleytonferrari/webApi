@@ -22,9 +22,9 @@ namespace UI.Api
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
-                /*constraints: null,
-                handler: exigeToken*/
+                defaults: new { id = RouteParameter.Optional },
+                constraints: null,
+                handler: exigeToken
             );
             config.EnableSystemDiagnosticsTracing();
 
