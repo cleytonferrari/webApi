@@ -126,13 +126,18 @@
                 contentType: "application/json",
                 cache: false,
                 type: type,
-                data: JSON.stringify(data)
+                data: JSON.stringify(data),
+                beforeSend: function (xhr) {
+                    //xhr.setRequestHeader("X-Token", $.cookie('token'));
+                }
             };
             return $.ajax(url, options);
         }
         
         // rotas
-        function pessoaUrl(id) { return "/api/pessoa/" + (id || ""); }
+        function pessoaUrl(id) { return "http://loginwebapi.apphb.com/api/pessoa/" + (id || ""); }
+        
+        //
 
     };
 

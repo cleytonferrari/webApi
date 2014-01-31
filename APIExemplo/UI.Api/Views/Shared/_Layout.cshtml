@@ -7,6 +7,7 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jquerycookie")
     @Scripts.Render("~/bundles/knockout")
     
     <script type="text/javascript">
@@ -38,6 +39,7 @@
                 <nav>
                     <ul id="menu">
                         <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, null)</li>
+                        <li>@Html.ActionLink("Login", "Login", "Cadastro", new { area = "" }, null)</li>
                         <li>@Html.ActionLink("Cadastro", "Index", "Cadastro", new { area = "" }, null)</li>
                         <li>@Html.ActionLink("API", "Index", "Help", new { area = "" }, null)</li>
                     </ul>

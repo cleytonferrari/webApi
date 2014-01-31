@@ -1,0 +1,86 @@
+﻿@{
+    ViewBag.Title = "Login";
+}
+
+
+<script type="text/javascript">
+    function LoginViewModel() {
+        var self = this;
+        self.login = ko.observable();
+        self.senha = ko.observable();
+
+        //propriedades pra auxiliar a tela
+        self.mensagem = ko.observable('');
+
+        self.btnLogar = function () {
+            Logar();
+        };
+
+        function Logar() {
+            var usuario =
+            {
+                Login: self.login(),
+                Senha: self.senha()
+            };
+            
+            return ajaxRequest("post", loginUrl(), usuario)
+                .done(function (data) {
+                    console.log(data);
+                    console.log(data.Token);
+                    $.cookie('token', data.Token);
+                    //exibe um salvo com sucesso
+                    self.mensagem("Login realizado com sucesso!");
+                    
+
+                   /* var delay = 3000;
+                    setTimeout(function() {
+                        window.location = "/cadastro";
+                    },delay);*/
+
+                })
+                .fail(function (data) {
+                    console.log(data);
+                    //exibe um erro
+                    self.mensagem("Erro ao logar.");
+                });
+        }
+
+
+        function ajaxRequest(type, url, data, dataType) { // Ajax helper
+            var options = {
+                dataType: dataType || "json",
+                contentType: "application/json",
+                cache: false,
+                type: type,
+                data: JSON.stringify(data)
+            };
+            return $.ajax(url, options);
+        }
+
+        // rotas
+        function loginUrl() { return "http://loginwebapi.apphb.com/api/login/autenticar"; }
+
+    };
+
+    var viewModel = new LoginViewModel();
+
+    $(document).ready(function () {
+        ko.applyBindings(viewModel);
+    });
+
+</script>
+
+<div id="body">
+    <section class="content-wrapper main-content clear-fix">
+        <h2>Login</h2>
+        <em data-bind="text: mensagem"></em>
+        <form>
+            <label>Login:</label>
+            <input type="text" value="" data-bind="value: login" />
+            <br />
+            <label>Senha:</label>
+            <input type="password" value="" data-bind="value: senha" />
+            <button data-bind="click: btnLogar">Entrar</button>
+        </form>
+    </section>
+</div>
